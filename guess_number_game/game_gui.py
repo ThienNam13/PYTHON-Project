@@ -135,4 +135,3 @@ result_label = ctk.CTkLabel(window, text="", font=("Arial", 14))
 result_label.pack(pady=10)
 
 window.mainloop()
-
