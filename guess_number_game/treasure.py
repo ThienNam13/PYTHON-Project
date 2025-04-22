@@ -47,5 +47,4 @@ def show_treasure_animation():
         if time.time() - animation_start > 3:
             running = False
 
-    pygame.quit()
-    sys.exit()
+    pygame.display.quit()  #Tắt cửa sổ animation

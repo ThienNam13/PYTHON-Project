@@ -2,7 +2,7 @@ import customtkinter as ctk
 import pygame
 from game_logic import generate_secret_number, check_guess
 from effects import shake_window, change_background
-from sounds import play_background_music, play_sound
+from sounds import play_background_music, play_sound, stop_all_sounds
 from settings import modes
 from treasure import show_treasure_animation
 
@@ -58,7 +58,11 @@ def on_check_guess():
             change_background(window, "pink")
             result_label.configure(text="🎉 Bạn siêu giỏi luôn!", text_color="green")
             show_treasure_animation()
+            entry.configure(state="disabled")
+            check_button.configure(state="disabled")
+            restart_button.pack(pady=5)
         elif result == "lose":
+            play_sound("lose")
             change_background(window, "red")
             result_label.configure(text="😢 Thua rồi, chơi lại nha!", text_color="red")
             entry.configure(state="disabled")
@@ -82,7 +86,7 @@ def on_check_guess():
             )
         elif result == "invalid":
             shake_window(window)
-            result_label.configure(text="⚠️ Nhập số hợp lệ nha!", text_color="red")
+            result_label.configure(text="Nhập số hợp lệ nha!", text_color="red")
 
     except ValueError:
         shake_window(window)
@@ -101,6 +105,9 @@ def on_mode_change(choice):
 # Thua thì cho chơi lại
 def restart_game():
     global secret_number, attempts
+    stop_all_sounds()  # Tắt âm thanh thua cuộc nếu đang phát
+    play_background_music()
+
     secret_number = generate_secret_number()
     attempts = 0
     entry.configure(state="normal")
